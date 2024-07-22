@@ -1,0 +1,48 @@
+:root {
+  color: rgba(255, 255, 255, 0.87);
+
+  font-family: sans-serif, 'Euclid Flex';
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: #242424;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100%;
+}
+
+.intro-text {
+  background-color: transparent;
+  color: #fff;
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+}
+.intro-text > span {
+  opacity: 0;
+}
+
+hr {
+  margin: 0;
+}
+
+.spiral-wrapper {
+  display: flex;
+  place-items: center;
+  height: 100%;
+}
+
+#spiral-text {
+  width: min(80vw, 90vh);
+  margin: auto;
+}
