@@ -1,7 +1,24 @@
+@font-face {
+  font-family: 'Euclid Flex';
+  src: url(fonts/EuclidFlex-Light.woff2) format("woff2"),
+  url(fonts/EuclidFlex-Light.woff) format("woff"),
+  url(fonts/EuclidFlex-Light.ttf) format("truetype");
+  font-weight:300;
+  font-style:normal
+}
+@font-face {
+  font-family: 'Euclid Flex';
+  src: url(fonts/EuclidFlex-Bold.woff2) format("woff2"),
+  url(fonts/EuclidFlex-Bold.woff) format("woff"),
+  url(fonts/EuclidFlex-Bold.ttf) format("truetype");
+  font-weight: 700;
+  font-style: normal
+}
+
 :root {
   color: rgba(255, 255, 255, 0.87);
 
-  font-family: sans-serif, 'Euclid Flex';
+  font-family: 'Euclid Flex', sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -9,27 +26,45 @@
 }
 
 body {
-  margin: 0;
   background-color: #242424;
+  font-family: 'Euclid Flex', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  margin: 0;
   min-width: 320px;
   min-height: 100vh;
 }
 
 #app {
-  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
-.intro-text {
+.header-text {
   background-color: transparent;
   color: #fff;
+  font-size: 1.25rem;
   display: flex;
   align-content: center;
   justify-content: space-between;
   font-weight: 700;
   padding: 0.5rem 1rem;
 }
-.intro-text > span {
-  opacity: 0;
+
+.footer-text {
+  background-color: transparent;
+}
+
+input[type="text"] {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  color: #fff;
+  outline: none;
 }
 
 hr {
@@ -40,9 +75,15 @@ hr {
   display: flex;
   place-items: center;
   height: 100%;
+  flex: 1;
 }
 
 #spiral-text {
   width: min(80vw, 90vh);
   margin: auto;
+}
+
+.church-name {
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
