@@ -87,7 +87,7 @@ hr {
 }
 
 #spiral-text {
-  width: min(80vw, 90vh);
+  width: min(80vw, 80vh);
   margin: auto;
 }
 
