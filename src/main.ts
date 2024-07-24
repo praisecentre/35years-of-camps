@@ -46,5 +46,5 @@ document.addEventListener('DOMContentLoaded', () => {
         opacity: [0, 1],
         duration: 400,
         easing: 'easeOutQuad',
-    }, '-=300')
+    })
 }, false);

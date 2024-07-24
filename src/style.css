@@ -63,6 +63,9 @@ body {
 
 .footer-text {
   background-color: transparent;
+  color: #fff;
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem;
 }
 
 .footer-text input[type="text"] {
@@ -70,9 +73,12 @@ body {
   width: 100%;
   background: transparent;
   border: none;
-  padding: 0.5rem 1rem;
   color: #fff;
   outline: none;
+  margin-left: 0.25rem;
+}
+input[type="text"]::placeholder {
+  font-family: 'Euclid Flex', sans-serif;
 }
 
 hr {
@@ -96,6 +102,60 @@ hr {
   text-transform: uppercase;
 }
 
+.feather {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.result-container {
+  flex: 1;
+  position: relative;
+}
+.detail-wrapper {
+  position: absolute;
+  top: 15%;
+  left: 15%;
+}
+.year {
+  font-weight: bold;
+  font-size: clamp(8rem, 33vw, 20rem);
+  opacity: 0.1;
+  transition: all 0.5s ease-out;
+}
+.hidden .year {
+  opacity: 0;
+  translate: -100% 0;
+}
+.person-detail {
+  position: absolute;
+  bottom: 20%;
+  right: -30%;
+  width: 400px;
+}
+.name {
+  color: #ee9c11;
+  font-size: 2rem;
+  font-weight: bold;
+  transition: all 0.5s ease-out;
+}
+.hidden .name {
+  opacity: 0;
+  translate: 50% 0;
+}
+.message {
+  transition: all 0.5s ease-out;
+}
+.hidden .message {
+  opacity: 0;
+  translate: 0 100%;
+}
 @media (min-width: 540px) {
   .header-text {
     flex-direction: row;
