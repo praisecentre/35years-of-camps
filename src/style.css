@@ -49,22 +49,28 @@ body {
   color: #fff;
   font-size: 1.25rem;
   display: flex;
+  flex-direction: column;
   align-content: center;
-  justify-content: space-between;
+  justify-content: center;
   font-weight: 700;
   padding: 0.5rem 1rem;
+  text-align: center;
+}
+
+.header-text span:nth-child(2) {
+  font-size: 1rem;
 }
 
 .footer-text {
   background-color: transparent;
 }
 
-input[type="text"] {
+.footer-text input[type="text"] {
+  font-size: 1.25rem;
   width: 100%;
   background: transparent;
   border: none;
   padding: 0.5rem 1rem;
-  font-size: 1rem;
   color: #fff;
   outline: none;
 }
@@ -88,4 +94,21 @@ hr {
 .church-name {
   letter-spacing: 2px;
   text-transform: uppercase;
+}
+
+@media (min-width: 540px) {
+  .header-text {
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    text-align: initial;
+  }
+
+  .header-text span:nth-child(2) {
+    font-size: inherit;
+  }
+
+  .footer-text input {
+    font-size: 1rem;
+  }
 }
