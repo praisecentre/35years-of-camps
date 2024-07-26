@@ -8,8 +8,18 @@ type Data = {
     message: string
 }
 
+let viewed:number[] = [];
 function randomData(): Data {
-    const random = Math.floor(Math.random() * data.length);
+    let random = Math.floor(Math.random() * data.length);
+    while (viewed.includes(random)) {
+        random = Math.floor(Math.random() * data.length);
+    }
+
+    viewed.push(random);
+    if (viewed.length === data.length) {
+        viewed = [];
+    }
+
     return data[random];
 }
 
@@ -29,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataOutTl = anime.timeline({
         autoplay: false,
         duration: 500,
-        easing: 'easeOutQuad',
+        easing: 'easeInQuad',
         complete: () => dataOutCompleted = true,
     })
     dataOutTl.add({
@@ -43,11 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
         opacity: [1, 0],
         translateX: [0, 0],
         translateY: [0, '100%'],
-    }, '-=300')
+    }, '-=200')
     dataOutTl.add({
         targets: '.year',
         opacity: 0,
-        translateX: '200%'
+        translateX: '200%',
+        easing: 'easeOutQuad'
     }, '-=500')
 
     const dataInTl = anime.timeline({
@@ -58,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .add({
             targets: '.year',
             opacity: [0, 0.1],
-            translate: ['-100%', 0],
+            translateX: ['-100%', 0],
         })
         .add({
             targets: '.name',
@@ -100,16 +111,18 @@ document.addEventListener('DOMContentLoaded', () => {
             duration: 1000,
         },
         complete: () => {
-            document.querySelector('.spiral-wrapper').style.display = 'none';
-            document.querySelector('.result-container').style.display = 'block';
+            const spiralWrapperEl = document.querySelector('.spiral-wrapper') as HTMLElement;
+            const dataContainerEl = document.querySelector('.result-container') as HTMLElement;
+
+            if (spiralWrapperEl) spiralWrapperEl.style.display = 'none';
+            if (dataContainerEl) dataContainerEl.style.display = 'block';
 
             dataRandomStart = true;
         }
     })
     const introTl = anime.timeline({
         autoplay: false,
-        complete: (anime) => {
-            console.log(anime);
+        complete: () => {
             setTimeout(introOutTl.play, 5500);
         }
     });
@@ -146,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         easing: 'easeOutQuad',
     }, '-=300');
     introTl.add({
-        targets: '#search',
+        targets: '.input-wrapper',
         opacity: [0, 1],
         duration: 400,
         easing: 'easeOutQuad',
@@ -172,7 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = randomData();
         setData(data);
         dataInTl.restart();
-        let timeout = data ? 4000 : 10000;
+
+        let timeout = 3000;
+        timeout += (data.message?.length ?? 0) * 50;
+
         setTimeout(dataOutTl.restart, timeout);
 
         requestAnimationFrame(startRandom);

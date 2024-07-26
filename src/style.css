@@ -121,8 +121,8 @@ hr {
 .detail-wrapper {
   position: absolute;
   top: 40%;
-  left: 15%;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .year {
   font-weight: bold;
@@ -131,14 +131,15 @@ hr {
 }
 .person-detail {
   position: absolute;
-  bottom: 20%;
-  right: -30%;
-  width: clamp(250px, 80vw, 400px);
+  top: 60%;
+  left: 10%;
+  width: clamp(250px, 75vw, 400px);
 }
 .name {
   color: #ee9c11;
   font-size: 2rem;
   font-weight: bold;
+  line-height: 1;
 }
 
 @media (min-width: 540px) {
@@ -155,5 +156,9 @@ hr {
 
   .footer-text input {
     font-size: 1rem;
+  }
+
+  .person-detail {
+    left: 40%;
   }
 }
