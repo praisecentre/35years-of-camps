@@ -10,6 +10,7 @@ type Data = {
 
 let viewed:number[] = [];
 function randomData(): Data {
+    // Make sure we don't display the same data until we have gone through all the data
     let random = Math.floor(Math.random() * data.length);
     while (viewed.includes(random)) {
         random = Math.floor(Math.random() * data.length);
@@ -34,8 +35,12 @@ function setData(data: Data): void {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const randomNotificationEl = document.getElementById('random-notification');
+
     let dataOutCompleted = true;
     let dataRandomStart = false;
+
+
     const dataOutTl = anime.timeline({
         autoplay: false,
         duration: 500,
@@ -123,7 +128,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const introTl = anime.timeline({
         autoplay: false,
         complete: () => {
-            setTimeout(introOutTl.play, 5500);
+            setTimeout(introOutTl.play, 5000);
+
+            if (!randomNotificationEl)
+                return;
+
+            let randomNotificationCount = 4;
+            randomNotificationEl.style.opacity = '1';
+
+            const randomNotificationInterval = setInterval(
+                () => {
+                    if (randomNotificationCount < 0) {
+                        clearInterval(randomNotificationInterval);
+                        return;
+                    }
+
+                    randomNotificationEl.textContent = `Start random in ${randomNotificationCount--}s`;
+                },
+                1000,
+            )
         }
     });
     introTl.add({
@@ -176,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const startRandom = () => {
         if (!dataRandomStart || !dataOutCompleted) {
+
             requestAnimationFrame(startRandom);
             return;
         }
@@ -187,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dataInTl.restart();
 
         let timeout = 3000;
-        timeout += (data.message?.length ?? 0) * 50;
+        timeout += (data.message?.length ?? 0) * 60;
 
         setTimeout(dataOutTl.restart, timeout);
 
