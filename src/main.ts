@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let dataOutCompleted = true;
     let dataRandomStart = false;
-
+    let userIsSearching = false;
 
     const dataOutTl = anime.timeline({
         autoplay: false,
@@ -198,8 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(introTl.play, 500);
 
     const startRandom = () => {
-        if (!dataRandomStart || !dataOutCompleted) {
-
+        if (userIsSearching || !dataRandomStart || !dataOutCompleted) {
             requestAnimationFrame(startRandom);
             return;
         }
@@ -217,7 +216,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
         requestAnimationFrame(startRandom);
     };
-
     requestAnimationFrame(startRandom);
+
+    let displayingSearchResult: number = 0;
+    let searchResult:Data[] = [];
+    const searchInput = document.getElementById('search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e:any) => {
+            const value = e.target.value;
+            if (value.length === 0) {
+                userIsSearching = false;
+                dataRandomStart = true;
+                return;
+            }
+
+            userIsSearching = true;
+            searchResult = data
+                .filter((d) => {
+                    return d.name.toLowerCase().search(value.toLowerCase()) >= 0
+                        || d.year.toString().search(value.toLowerCase()) >= 0;
+                });
+            displayingSearchResult = 0;
+
+            console.log(searchResult);
+        });
+    }
+
+    const displaySearchResult = () => {
+        if (!userIsSearching || !dataOutCompleted || displayingSearchResult >= searchResult.length) {
+            requestAnimationFrame(displaySearchResult);
+            return;
+        }
+
+        dataOutCompleted = false;
+        const data = searchResult[displayingSearchResult++];
+        setData(data);
+        dataInTl.restart();
+        console.log(data);
+
+        let timeout = 3000;
+        timeout += (data.message?.length ?? 0) * 60;
+        setTimeout(dataOutTl.restart, timeout);
+
+        requestAnimationFrame(displaySearchResult);
+    }
+    requestAnimationFrame(displaySearchResult);
 
 }, false);
