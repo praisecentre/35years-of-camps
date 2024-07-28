@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
 
-                    randomNotificationEl.textContent = `Start random in ${randomNotificationCount--}s`;
+                    randomNotificationEl.textContent = `Random in ${randomNotificationCount--}s`;
                 },
                 1000,
             )
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
         easing: 'easeOutQuad',
     }, '-=1000');
     introTl.add({
-        targets: 'hr.top-line',
+        targets: 'hr',
         opacity: [0, 1],
         duration: 400,
         easing: 'easeOutQuad',
@@ -205,12 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
         duration: 400,
         easing: 'easeOutQuad',
     }, '-=300')
-    introTl.add({
-        targets: 'hr.bottom-line',
-        opacity: [0, 1],
-        duration: 400,
-        easing: 'easeOutQuad',
-    });
 
 
     setTimeout(introTl.play, 500);
