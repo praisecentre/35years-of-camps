@@ -260,8 +260,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const displaySearchResult = () => {
-        if (!userIsSearching || !dataOutCompleted || displayingSearchResult >= searchResult.length) {
+        if (!userIsSearching || !dataOutCompleted) {
             requestAnimationFrame(displaySearchResult);
+            return;
+        }
+
+        if (displayingSearchResult >= searchResult.length) {
+            // loop back in after a period of time of nothingness
+            displayingSearchResult = 0;
+            timeoutId = setTimeout(() => requestAnimationFrame(displaySearchResult), 1500);
             return;
         }
 
@@ -273,7 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let timeout = 3000;
         timeout += (data.message?.length ?? 0) * 60;
         timeoutId = setTimeout(dataOutTl.restart, timeout);
-
         requestAnimationFrame(displaySearchResult);
     }
     requestAnimationFrame(displaySearchResult);
