@@ -149,6 +149,7 @@ hr {
   font-size: 2rem;
   font-weight: bold;
   line-height: 1;
+  text-transform: uppercase;
 }
 
 @media (min-width: 540px) {

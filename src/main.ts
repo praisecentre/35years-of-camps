@@ -8,6 +8,18 @@ type Data = {
     message: string
 }
 
+function debounce(func:any, delay:number) {
+    let timeout:number|null = null
+    return (...args:any[]) => {
+        if(timeout) clearTimeout(timeout)
+
+        timeout = setTimeout(() => {
+            func(...args)
+            timeout = null
+        }, delay)
+    }
+}
+
 let viewed:number[] = [];
 function randomData(): Data {
     // Make sure we don't display the same data until we have gone through all the data
@@ -40,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let dataOutCompleted = true;
     let dataRandomStart = false;
     let userIsSearching = false;
+    let timeoutId:number|null = null;
 
     const dataOutTl = anime.timeline({
         autoplay: false,
@@ -212,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let timeout = 3000;
         timeout += (data.message?.length ?? 0) * 60;
 
-        setTimeout(dataOutTl.restart, timeout);
+        timeoutId = setTimeout(dataOutTl.restart, timeout);
 
         requestAnimationFrame(startRandom);
     };
@@ -222,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let searchResult:Data[] = [];
     const searchInput = document.getElementById('search');
     if (searchInput) {
-        searchInput.addEventListener('input', (e:any) => {
+        searchInput.addEventListener('input', debounce((e:any) => {
             const value = e.target.value;
             if (value.length === 0) {
                 userIsSearching = false;
@@ -238,8 +251,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             displayingSearchResult = 0;
 
-            console.log(searchResult);
-        });
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+                timeoutId = null;
+                dataOutTl.restart();
+            }
+        }, 500));
     }
 
     const displaySearchResult = () => {
@@ -252,11 +269,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = searchResult[displayingSearchResult++];
         setData(data);
         dataInTl.restart();
-        console.log(data);
 
         let timeout = 3000;
         timeout += (data.message?.length ?? 0) * 60;
-        setTimeout(dataOutTl.restart, timeout);
+        timeoutId = setTimeout(dataOutTl.restart, timeout);
 
         requestAnimationFrame(displaySearchResult);
     }
