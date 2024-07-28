@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let dataRandomStart = false;
     let userIsSearching = false;
     let timeoutId:number|null = null;
+    let introOutTimeoutId:number|null = null;
 
     const dataOutTl = anime.timeline({
         autoplay: false,
@@ -136,12 +137,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (dataContainerEl) dataContainerEl.style.display = 'block';
 
             dataRandomStart = true;
+            introOutTimeoutId = null;
         }
     })
     const introTl = anime.timeline({
         autoplay: false,
         complete: () => {
-            setTimeout(introOutTl.play, 5000);
+            introOutTimeoutId = setTimeout(introOutTl.play, 5000);
 
             if (!randomNotificationEl)
                 return;
@@ -251,6 +253,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             displayingSearchResult = 0;
 
+            if (introOutTimeoutId) {
+                clearTimeout(introOutTimeoutId);
+                introOutTl.play();
+            }
+
             if (timeoutId) {
                 clearTimeout(timeoutId);
                 timeoutId = null;
@@ -278,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dataInTl.restart();
 
         let timeout = 3000;
-        timeout += (data.message?.length ?? 0) * 60;
+        timeout += (data.message?.length ?? 0) * 50;
         timeoutId = setTimeout(dataOutTl.restart, timeout);
         requestAnimationFrame(displaySearchResult);
     }
