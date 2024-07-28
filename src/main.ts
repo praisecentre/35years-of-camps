@@ -3,7 +3,7 @@ import anime from 'animejs';
 import data from './data';
 
 type Data = {
-    year: number
+    year: number|string
     name: string
     message: string
 }
@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let dataOutCompleted = true;
     let dataRandomStart = false;
     let userIsSearching = false;
+    let introOutCompleted = false;
+    let noResultShown = false;
     let timeoutId:number|null = null;
     let introOutTimeoutId:number|null = null;
 
@@ -130,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             duration: 1000,
         },
         complete: () => {
+            introOutCompleted = true;
             const spiralWrapperEl = document.querySelector('.spiral-wrapper') as HTMLElement;
             const dataContainerEl = document.querySelector('.result-container') as HTMLElement;
 
@@ -235,8 +238,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let displayingSearchResult: number = 0;
     let searchResult:Data[] = [];
-    const searchInput = document.getElementById('search');
+    const searchInput = document.getElementById('search') as HTMLInputElement;
     if (searchInput) {
+        searchInput.value = '';
         searchInput.addEventListener('input', debounce((e:any) => {
             const value = e.target.value;
             if (value.length === 0) {
@@ -245,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            noResultShown = false;
             userIsSearching = true;
             searchResult = data
                 .filter((d) => {
@@ -267,7 +272,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const displaySearchResult = () => {
-        if (!userIsSearching || !dataOutCompleted) {
+        if (!userIsSearching || !dataOutCompleted || !introOutCompleted) {
+            requestAnimationFrame(displaySearchResult);
+            return;
+        }
+
+        if (searchResult.length === 0) {
+            if (!noResultShown) {
+                noResultShown = true;
+                setData({year: '', name: 'No Results', message: ''});
+                dataInTl.restart();
+            }
             requestAnimationFrame(displaySearchResult);
             return;
         }
@@ -275,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (displayingSearchResult >= searchResult.length) {
             // loop back in after a period of time of nothingness
             displayingSearchResult = 0;
-            timeoutId = setTimeout(() => requestAnimationFrame(displaySearchResult), 1500);
+            timeoutId = setTimeout(() => requestAnimationFrame(displaySearchResult), 2000);
             return;
         }
 
